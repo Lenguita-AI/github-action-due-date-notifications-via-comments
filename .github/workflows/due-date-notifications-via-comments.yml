@@ -16,6 +16,6 @@ jobs:
       - name: Run due date notifications
         uses: ./
         with:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           days-before-due: 3  # Number of days before due date to notify
 
