@@ -1,0 +1,21 @@
+name: Due Date Notifications Via Comments
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight (UTC on GH servers)
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run due date notifications
+        uses: ./
+        with:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          days-before-due: 3  # Number of days before due date to notify
+
