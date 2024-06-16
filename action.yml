@@ -1,0 +1,15 @@
+name: 'Due Date Notifications Via Comments'
+description: 'Adds comments to issues with approaching deadlines as a proxy for due date notifications.'
+author: 'TypoMC'
+inputs:
+  GH_TOKEN:
+    description: 'GitHub token used to make API requests'
+    required: true
+  days-before-due:
+    description: 'Number of days before due date to notify'
+    required: true
+    default: '1'
+runs:
+  using: 'node12'
+  main: 'dist/app.js'
+
