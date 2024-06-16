@@ -11,5 +11,5 @@ inputs:
     default: '1'
 runs:
   using: 'node20'
-  main: 'dist/app.js'
+  main: 'dist/index.js'
 
