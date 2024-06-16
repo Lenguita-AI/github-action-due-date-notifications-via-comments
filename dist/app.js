@@ -24,12 +24,17 @@ function run() {
         if (dueDateMatch) {
           const dueDateStr = dueDateMatch[1];
           const dueDate = new Date(dueDateStr);
+
+          // Calculate the difference between today and the due date in days
+          const timeDiff = dueDate.getTime() - today.getTime();
+          const daysUntilDue = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
+
           if (dueDate <= notificationDate) {
             octokit.rest.issues.createComment({
               owner,
               repo,
               issue_number: issue.number,
-              body: `This issue is due in ${daysBeforeDue} day(s).`
+              body: `This issue is due in ${daysUntilDue} day(s) on ${dueDateStr}.`
             }).catch(error => core.setFailed(error.message));
           }
         }
@@ -41,4 +46,3 @@ function run() {
 }
 
 run();
-
