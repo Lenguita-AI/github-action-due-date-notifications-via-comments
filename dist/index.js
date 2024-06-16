@@ -31100,7 +31100,7 @@ function run() {
       notificationDate.setDate(today.getDate() + daysBeforeDue);
 
       issues.forEach(issue => {
-        const dueDateMatch = issue.body.match(/Due\s*Date\s*[:|-]?\s*(\d{4}-\d{2}-\d{2})/i);
+        const dueDateMatch = issue.body.match(/Due\s*[:|-]?\s*(\d{4}-\d{2}-\d{2})/i);
         if (dueDateMatch) {
           const dueDateStr = dueDateMatch[1];
           const dueDate = new Date(dueDateStr);
