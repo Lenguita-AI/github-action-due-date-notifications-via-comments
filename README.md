@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.1.7
+        uses: actions/checkout@v4
 
       - name: Run due date notifications via comments
-        uses: ./
+        uses: Lenguita-AI/github-action-due-date-notifications-via-comments@v1.1
         with:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           days-before-due: 3  # Adjust this depending on your preference to be notified
