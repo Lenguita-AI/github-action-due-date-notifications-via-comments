@@ -29,12 +29,29 @@ function run() {
           const timeDiff = dueDate.getTime() - today.getTime();
           const daysUntilDue = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
 
-          if (dueDate <= notificationDate) {
+          if (daysUntilDue < -2) {
+            // No comment if due date was more than 2 days ago
+            return;
+          } else if (daysUntilDue === -1) {
             octokit.rest.issues.createComment({
               owner,
               repo,
               issue_number: issue.number,
-              body: `This issue is due in ${daysUntilDue} day(s) on ${dueDateStr}.`
+              body: `The due date of this issue has **pased**.`
+            }).catch(error => core.setFailed(error.message));
+          } else if (daysUntilDue === 0) {
+              octokit.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issue.number,
+              body: `The due date of this issue is **today**.`
+            }).catch(error => core.setFailed(error.message));
+          } else if (dueDate <= notificationDate) {
+            octokit.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issue.number,
+              body: `This issue is due in ${daysUntilDue} day(s), on ${dueDateStr}.`
             }).catch(error => core.setFailed(error.message));
           }
         }
