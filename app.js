@@ -20,39 +20,41 @@ function run() {
       notificationDate.setDate(today.getDate() + daysBeforeDue);
 
       issues.forEach(issue => {
-        const dueDateMatch = issue.body.match(/Due\s*[:|-]?\s*(\d{4}-\d{2}-\d{2})/i);
-        if (dueDateMatch) {
-          const dueDateStr = dueDateMatch[1];
-          const dueDate = new Date(dueDateStr);
+        if (issue.body) {
+          const dueDateMatch = issue.body.match(/Due\s*[:|-]?\s*(\d{4}-\d{2}-\d{2})/i);
+          if (dueDateMatch) {
+            const dueDateStr = dueDateMatch[1];
+            const dueDate = new Date(dueDateStr);
 
-          // Calculate the difference between today and the due date in days
-          const timeDiff = dueDate.getTime() - today.getTime();
-          const daysUntilDue = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
+            // Calculate the difference between today and the due date in days
+            const timeDiff = dueDate.getTime() - today.getTime();
+            const daysUntilDue = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
 
-          if (daysUntilDue < -2) {
-            // No comment if due date was more than 2 days ago
-            return;
-          } else if (daysUntilDue === -1) {
-            octokit.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: issue.number,
-              body: `The due date of this issue has **pased**.`
-            }).catch(error => core.setFailed(error.message));
-          } else if (daysUntilDue === 0) {
+            if (daysUntilDue < -2) {
+              // No comment if due date was more than 2 days ago
+              return;
+            } else if (daysUntilDue === -1) {
               octokit.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: issue.number,
-              body: `The due date of this issue is **today**.`
-            }).catch(error => core.setFailed(error.message));
-          } else if (dueDate <= notificationDate) {
-            octokit.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: issue.number,
-              body: `This issue is due in ${daysUntilDue} day(s), on ${dueDateStr}.`
-            }).catch(error => core.setFailed(error.message));
+                owner,
+                repo,
+                issue_number: issue.number,
+                body: `The due date of this issue has **passed**.`
+              }).catch(error => core.setFailed(error.message));
+            } else if (daysUntilDue === 0) {
+              octokit.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issue.number,
+                body: `The due date of this issue is **today**.`
+              }).catch(error => core.setFailed(error.message));
+            } else if (dueDate <= notificationDate) {
+              octokit.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: issue.number,
+                body: `This issue is due in ${daysUntilDue} day(s), on ${dueDateStr}.`
+              }).catch(error => core.setFailed(error.message));
+            }
           }
         }
       });
@@ -63,3 +65,4 @@ function run() {
 }
 
 run();
+
