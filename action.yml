@@ -9,7 +9,9 @@ inputs:
     description: 'Number of days before due date to notify'
     required: true
     default: '1'
+branding:
+  icon: 'memo'
+  color: 'white'
 runs:
   using: 'node20'
   main: 'dist/index.js'
-
