@@ -30,7 +30,7 @@ function run() {
             const timeDiff = dueDate.getTime() - today.getTime();
             const daysUntilDue = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Convert milliseconds to days
 
-            if (daysUntilDue < -2) {
+            if (daysUntilDue < -1) {
               // No comment if due date was more than 2 days ago
               return;
             } else if (daysUntilDue === -1) {
